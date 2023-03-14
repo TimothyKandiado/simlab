@@ -69,7 +69,7 @@ impl Flowsheet {
     }
 
     fn iterate_flowsheet(&mut self) -> Result<(), SimulationError> {
-        for _ in 1..5 {
+        for _ in 1..10 {
             let result = self.unit_handler.simulate_units();
 
             if let Err(error) = result {

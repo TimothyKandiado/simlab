@@ -22,7 +22,14 @@ impl UnitHandler {
 
     pub fn simulate_units(&mut self) -> Result<(), SimulationError> {
         for (_, unit) in self.units.iter() {
-            unit.simulate(&mut self.stream_handler)?;
+            let result = unit.simulate(&mut self.stream_handler);
+
+            if let Err(error) = result {
+                match error {
+                    SimulationError::StreamNotFound(_) => {return Err(error);},
+                    _ => {continue}
+                }
+            }
         }
 
         Ok(())

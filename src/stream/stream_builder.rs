@@ -13,12 +13,12 @@ impl StreamBuilder {
         StreamBuilder { temperature: 0.0, pressure: 0.0, materials: HashMap::new() }
     }
 
-    pub fn add_material(mut self, material: Material) -> StreamBuilder {
-        if let Some(material) = self.materials.get_mut(material.name.as_str()) {
-            material.mass += material.mass;
+    pub fn add_material(mut self, new_material: Material) -> StreamBuilder {
+        if let Some(present_material) = self.materials.get_mut(new_material.name.as_str()) {
+            present_material.mass += new_material.mass;
         }
         else {
-            self.materials.insert(material.name.clone(), material);
+            self.materials.insert(new_material.name.clone(), new_material);
         }
 
         self
