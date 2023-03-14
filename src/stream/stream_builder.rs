@@ -9,8 +9,8 @@ pub struct StreamBuilder {
 }
 
 impl StreamBuilder {
-    pub fn new(pressure: f64, temperature: f64) -> StreamBuilder {
-        StreamBuilder { temperature, pressure, materials: HashMap::new() }
+    pub fn new() -> StreamBuilder {
+        StreamBuilder { temperature: 0.0, pressure: 0.0, materials: HashMap::new() }
     }
 
     pub fn add_material(mut self, material: Material) -> StreamBuilder {

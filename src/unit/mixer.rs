@@ -1,4 +1,4 @@
-use crate::{stream::{Stream, material::Material}, error::SimulationError, unit::Unit, 
+use crate::{stream::{Stream, material::Material, stream_builder::StreamBuilder}, error::SimulationError, unit::Unit, 
             flowsheet::unit_handler::stream_handler::StreamHandler};
 
 pub struct Mixer {
@@ -42,8 +42,8 @@ impl Mixer {
         let mut total_pressure: f64 = 0.0;
         let mut total_temperature: f64 = 0.0;
 
-
         let number_of_streams = input_streams.len() as f64;
+        let mut stream_builder = StreamBuilder::new();
 
         for input_stream in input_streams {
             let mut stream_pressure: f64 = 0.0;
@@ -58,11 +58,23 @@ impl Mixer {
             let mut stream_materials: Vec<Material> = Vec::new();
             Stream::unwrap_stream_property(&mut stream_materials, input_stream.materials.clone())?;
 
+            for material in stream_materials.into_iter() {
+                stream_builder = stream_builder.add_material(material);
+            }
+
         }
 
+        let output_pressure = total_pressure / number_of_streams;
+        let output_temperature = total_temperature / number_of_streams;
 
-        output_stream.pressure = Some(total_pressure / number_of_streams);
-        output_stream.temperature = Some(total_temperature / number_of_streams);
+        stream_builder = stream_builder.set_pressure(output_pressure)
+                        .set_temperature(output_temperature);
+
+        let stream = stream_builder.build();
+
+        output_stream.pressure = stream.pressure;
+        output_stream.temperature = stream.temperature;
+        output_stream.materials = stream.materials;
 
         Ok(())
     }
