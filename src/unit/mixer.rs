@@ -29,7 +29,10 @@ impl Unit for Mixer {
             return Err(SimulationError::StreamNotFound(self.output_stream_name.clone()));
         }
 
-        self.run_mixer(input_streams, &mut output_stream)
+        self.run_mixer(input_streams, &mut output_stream)?;
+        stream_handler.set_stream(self.output_stream_name.clone(), output_stream);
+
+        Ok(())
     }
 
     fn has_converged(&self) -> bool {
@@ -38,6 +41,12 @@ impl Unit for Mixer {
 }
 
 impl Mixer {
+    pub fn new(input_stream_names: Vec<String>, output_stream_name: String) -> Mixer {
+        Mixer {
+            input_stream_names,
+            output_stream_name
+        }
+    }
     fn run_mixer(&self, input_streams: Vec<Stream>, output_stream: &mut Stream) -> Result<(), SimulationError> {
         let mut total_pressure: f64 = 0.0;
         let mut total_temperature: f64 = 0.0;

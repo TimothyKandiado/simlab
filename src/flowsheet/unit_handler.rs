@@ -19,4 +19,12 @@ impl UnitHandler {
     pub fn verify_units(&self) -> Result<(), SimulationError> {
         Ok(())
     }
+
+    pub fn simulate_units(&mut self) -> Result<(), SimulationError> {
+        for (_, unit) in self.units.iter() {
+            unit.simulate(&mut self.stream_handler)?;
+        }
+
+        Ok(())
+    }
 }
