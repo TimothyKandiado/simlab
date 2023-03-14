@@ -1,0 +1,10 @@
+[package]
+name = "simlab"
+version = "0.1.1"
+edition = "2021"
+authors = ["Timothy Kandiado <kandiadot@gmail.com>"]
+description = "Chemical process simulator"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
